@@ -6,7 +6,7 @@ public class Summary : Summary<Endpoint>
     {
         Summary = "Get a book from the system for the given ID";
         Description = "Returns a single book from the system for the given ID. This is a public endpoint and does not require authentication.";
-        Response<IEnumerable<MyWebApp.Models.Book>>(200, "Book was found and is returned.");
+        Response<IEnumerable<Learning.FastEndpoionts.Models.Book>>(200, "Book was found and is returned.");
         Response(404, "Book was not found.");
     }
 }

@@ -1,4 +1,4 @@
-namespace MyWebApp.Models; 
+namespace Learning.FastEndpoionts.Models; 
 
 /// <summary>
 /// A book model.
