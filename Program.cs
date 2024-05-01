@@ -1,8 +1,6 @@
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using FastEndpoints.Swagger;
-using Learning.FastEndpoionts.Services;
 using Serilog;
 using Serilog.Events;
 
@@ -49,9 +47,6 @@ try
             };
         });
 
-    
-    builder.Services.AddSingleton<IBookService, BookService>();
-
     await using var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseFastEndpoints(c =>
@@ -76,8 +71,6 @@ finally
     // (Avoid segmentation fault on Linux).
     Log.CloseAndFlush();
 }
-
-
 
 static void InitializeBootstrapLogger()
 {

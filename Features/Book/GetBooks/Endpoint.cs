@@ -1,21 +1,18 @@
-using Learning.FastEndpoionts.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Learning.FastEndpoionts.Features.Book.GetBooks;
 
-public class Endpoint(IBookService bookService) : EndpointWithoutRequest<Results<Ok<IEnumerable<Learning.FastEndpoionts.Models.Book>>, NotFound>>
+public class Endpoint() : EndpointWithoutRequest<Results<Ok<IList<Learning.FastEndpoionts.Models.Book>>, NotFound>>
 {
-    private readonly IBookService _bookService = bookService;
-
     public override void Configure()
     {
         Get("/books");
         AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<IEnumerable<Learning.FastEndpoionts.Models.Book>>, NotFound>> ExecuteAsync(CancellationToken ct)
+    public override async Task<Results<Ok<IList<Learning.FastEndpoionts.Models.Book>>, NotFound>> ExecuteAsync(CancellationToken ct)
     {
-        var books = _bookService.GetBooks();
+        var books = Data.GetAllBooks();
 
         return books == null || !books.Any()
             ? TypedResults.NotFound() 
