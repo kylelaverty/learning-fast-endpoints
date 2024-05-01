@@ -1,4 +1,4 @@
-namespace Features.Book.GetBook;
+namespace Learning.FastEndpoionts.Features.Book.GetBook;
 
 /// <summary>
 /// The request object for the GetBook endpoint.

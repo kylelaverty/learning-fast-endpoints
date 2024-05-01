@@ -1,15 +1,11 @@
+using Learning.FastEndpoionts.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Features.Book.GetBook;
+namespace Learning.FastEndpoionts.Features.Book.GetBook;
 
-public class Endpoint : Endpoint<Request, Results<Ok<MyWebApp.Models.Book>, NotFound>>
+public class Endpoint(IBookService bookService) : Endpoint<Request, Results<Ok<MyWebApp.Models.Book>, NotFound>>
 {
-    private readonly IBookService _bookService;
-
-    public Endpoint(IBookService bookService)
-    {
-        _bookService = bookService;
-    }
+    private readonly IBookService _bookService = bookService;
 
     public override void Configure()
     {
@@ -20,11 +16,7 @@ public class Endpoint : Endpoint<Request, Results<Ok<MyWebApp.Models.Book>, NotF
     public override async Task<Results<Ok<MyWebApp.Models.Book>, NotFound>> ExecuteAsync(Request request, CancellationToken ct)
     {
         var book = _bookService.GetBook(request.Id);
-        if (book == null)
-        {
-            return TypedResults.NotFound();
-        }
 
-        return TypedResults.Ok(book);
+        return book == null ? TypedResults.NotFound() : TypedResults.Ok(book);
     }
 }

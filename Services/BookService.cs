@@ -1,13 +1,15 @@
 using MyWebApp.Models;
 
+namespace Learning.FastEndpoionts.Services;
+
 public class BookService : IBookService
 {
     private readonly List<Book> _books;
 
     public BookService()
     {
-        _books = new List<Book>
-            {
+        _books =
+            [
                 new()
                 {
                     Id = 1,
@@ -32,18 +34,10 @@ public class BookService : IBookService
                     Title = "Programming WCF Services",
                     Author = "Juval Lowy and Michael Montgomery"
                 }
-            };
+            ];
     }
 
-    public IEnumerable<Book> GetBooks()
-    {
-        return this._books;
-    }
+    public IEnumerable<Book> GetBooks() => _books;
 
-    public Book GetBook(int id)
-    {
-        var book = this._books.FirstOrDefault(x => x.Id == id);
-
-        return book;
-    }
+    public Book? GetBook(int id) => _books.FirstOrDefault(x => x.Id == id);
 }

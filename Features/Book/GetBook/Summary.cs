@@ -1,4 +1,4 @@
-namespace Features.Book.GetBook;
+namespace Learning.FastEndpoionts.Features.Book.GetBook;
 
 public class Summary : Summary<Endpoint>
 {
