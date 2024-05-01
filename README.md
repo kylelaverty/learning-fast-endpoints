@@ -21,8 +21,10 @@ Created with :heart: by [Kyle Laverty](https://github.com/kylelaverty)
 - [FastEndpoints](https://fast-endpoints.com/)
 - [Swagger](https://swagger.io/)
 - [FastEndpoints Swagger Support](https://fast-endpoints.com/docs/swagger-support)
+- [Seq](https://datalust.co/seq)
 
 ## Notes
 
 - Access API here: http://localhost:5112/api/...
 - Access Swagger here: http://localhost:5112/swagger/index.html#/Books/FeaturesBookGetBooksEndpoint
+- Start Seq instance: docker run --rm -it -e ACCEPT_EULA=y -p 5341:80 datalust/seq
