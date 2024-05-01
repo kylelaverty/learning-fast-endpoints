@@ -1,5 +1,8 @@
 namespace Learning.FastEndpoionts.Features.Book.GetBooks;
 
+/// <summary>
+/// Data access methods for the GetBooks feature.
+/// </summary>
 public static class Data
 {
     /// <summary>

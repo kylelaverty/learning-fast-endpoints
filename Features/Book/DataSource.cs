@@ -1,5 +1,8 @@
 namespace Learning.FastEndpoionts.Features.Book;
 
+/// <summary>
+/// Serve as a temp data source for the Book feature.
+/// </summary>
 public static class DataSource
 {
     public static IList<Models.Book> Books { get; } =

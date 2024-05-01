@@ -1,5 +1,8 @@
 namespace Learning.FastEndpoionts.Features.Book.GetBooks;
 
+/// <summary>
+/// The Swagger docs summary data for the GetBooks endpoint.
+/// </summary>
 public class Summary : Summary<Endpoint>
 {
     public Summary()
