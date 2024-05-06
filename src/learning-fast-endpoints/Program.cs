@@ -83,3 +83,5 @@ static void InitializeBootstrapLogger()
         .WriteTo.Console()
         .CreateBootstrapLogger();
 }
+
+public partial class Program { }
