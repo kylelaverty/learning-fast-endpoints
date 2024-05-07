@@ -1,4 +1,4 @@
-namespace Learning.FastEndpoionts.Features.Book.GetBooks;
+﻿namespace Learning.FastEndpoionts.Features.Book.GetBooks;
 
 /// <summary>
 /// Data access methods for the GetBooks feature.
@@ -9,5 +9,5 @@ public static class Data
     /// Gets all books from the data source.
     /// </summary>
     /// <returns>List of the Books currently available.</returns>
-    internal static IList<Models.Book> GetAllBooks() => DataSource.Books;
+    internal static IEnumerable<Models.Book> GetAllBooks() => DataSource.Books;
 }

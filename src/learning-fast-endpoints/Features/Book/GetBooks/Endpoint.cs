@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Learning.FastEndpoionts.Features.Book.GetBooks;
 
 /// <summary>
 /// Endpoint for getting all the books.
 /// </summary>
-public class Endpoint() : EndpointWithoutRequest<Results<Ok<IList<Learning.FastEndpoionts.Models.Book>>, NotFound>>
+public class Endpoint() : EndpointWithoutRequest<Results<Ok<IEnumerable<Models.Book>>, NotFound>>
 {
     public override void Configure()
     {
@@ -18,7 +18,7 @@ public class Endpoint() : EndpointWithoutRequest<Results<Ok<IList<Learning.FastE
     /// </summary>
     /// <param name="cancellationToken">A token that can be observed to cancel the operation.</param>
     /// <returns></returns>
-    public override async Task<Results<Ok<IList<Learning.FastEndpoionts.Models.Book>>, NotFound>> ExecuteAsync(CancellationToken cancellationToken = default)
+    public override async Task<Results<Ok<IEnumerable<Models.Book>>, NotFound>> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         var books = Data.GetAllBooks();
 
