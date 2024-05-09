@@ -8,8 +8,8 @@ public class Tests(App app) : TestBase<App>
     public async Task Get_Books_Result()
     {
         var targetBook = FastEndpoionts.Features.Book.DataSource.Books;
-
-        var (response, result) = await app.Client.GETAsync<Endpoint, IEnumerable<Models.Book>>();
+        var client = app.CreateClient();
+        var (response, result) = await client.GETAsync<Endpoint, IEnumerable<Models.Book>>();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         result.Should().NotBeNull();
         result.Count().Should().Be(targetBook.Count());
