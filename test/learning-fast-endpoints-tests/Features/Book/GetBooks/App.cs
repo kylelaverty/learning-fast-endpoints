@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
+namespace Learning.FastEndpoionts.Tests.Features.Book.GetBooks;
+
 public class App : AppFixture<Program>
 {
     protected override Task SetupAsync()
