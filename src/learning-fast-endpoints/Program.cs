@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 using FastEndpoints.Swagger;
 using Serilog;
@@ -8,18 +8,14 @@ const string _applicationName = "Learning - FastEndpoints";
 
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-InitializeBootstrapLogger();
-
 try
 {
-    Log.Information("Main - Init {ApplicationName}", _applicationName);
-    Log.Information("Executing in user context: {User}", Environment.UserName);
-
-    var builder = WebApplication.CreateBuilder(new WebApplicationOptions{
+    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+    {
         Args = args
     });
 
-    builder.Services.AddSerilog((services, loggerConfig) => 
+    builder.Services.AddSerilog((services, loggerConfig) =>
         loggerConfig
             .ReadFrom.Configuration(builder.Configuration)
             .ReadFrom.Services(services)
@@ -70,18 +66,6 @@ finally
     // Ensure to flush and stop internal timers/threads before application-exit
     // (Avoid segmentation fault on Linux).
     Log.CloseAndFlush();
-}
-
-static void InitializeBootstrapLogger()
-{
-    Log.Logger = new LoggerConfiguration()
-        .MinimumLevel.Information()
-        .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .CreateBootstrapLogger();
 }
 
 public partial class Program { }

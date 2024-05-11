@@ -1,0 +1,21 @@
+{
+  "dotnet.defaultSolution": "learning-fast-endpoints.sln",
+  "editor.formatOnSave": true,
+  "editor.minimap.maxColumn": 120,
+  "editor.rulers": [
+    120
+  ],
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 30000,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/bin": true,
+    "**/obj": true
+  },
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.useEditorFormattingSettings": false,
+}
