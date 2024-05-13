@@ -8,8 +8,13 @@ const string _applicationName = "Learning - FastEndpoints";
 
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
+InitializeBootUpLogger();
+
 try
 {
+    Log.Logger.Information("Main - Init {ApplicationName}", _applicationName);
+    Log.Logger.Information("Executing in user context: {User}", Environment.UserName);
+
     var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     {
         Args = args
@@ -57,15 +62,27 @@ try
 catch (Exception ex)
 {
     // Catch errors in project setup that result in an unusable system.
-    Log.Fatal(ex, "Host terminated unexpectedly");
+    Log.Logger.Fatal(ex, "Host terminated unexpectedly");
 }
 finally
 {
-    Log.Information("Main - Shutdown {ApplicationName}", _applicationName);
+    Log.Logger.Information("Main - Shutdown {ApplicationName}", _applicationName);
 
     // Ensure to flush and stop internal timers/threads before application-exit
     // (Avoid segmentation fault on Linux).
     Log.CloseAndFlush();
+}
+
+static void InitializeBootUpLogger()
+{
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .WriteTo.Console(new Serilog.Formatting.Compact.RenderedCompactJsonFormatter())
+        .CreateLogger();
 }
 
 public partial class Program { }

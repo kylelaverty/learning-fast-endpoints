@@ -22,6 +22,7 @@ Created with :heart: by [Kyle Laverty](https://github.com/kylelaverty)
 - [Swagger](https://swagger.io/)
 - [FastEndpoints Swagger Support](https://fast-endpoints.com/docs/swagger-support)
 - [Seq](https://datalust.co/seq)
+- [Ardalis Serilog Tutorial](https://www.youtube.com/watch?v=mnPW8PURQOc)
 
 ## Notes
 
