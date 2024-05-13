@@ -1,8 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using FastEndpoints.Swagger;
+using FastEndpoints.Security;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 const string _applicationName = "Learning - FastEndpoints";
 
@@ -20,14 +24,41 @@ try
         Args = args
     });
 
+    var assembly = Assembly.GetExecutingAssembly();
+    var assemblyName = assembly.GetName();
+    var version = assemblyName.Version;
+    var buildDate = new System.IO.FileInfo(Assembly.GetExecutingAssembly().Location).LastWriteTime;
+
     builder.Services.AddSerilog((services, loggerConfig) =>
         loggerConfig
             .ReadFrom.Configuration(builder.Configuration)
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
+            .Enrich.WithProperty("Version", version)
+            .Enrich.WithProperty("BuildDate", buildDate.ToString("f", CultureInfo.InvariantCulture))
     );
 
     builder.Services
+        .AddAuthenticationJwtBearer(
+            s =>
+            {
+                s.SigningKey = "The secret used to sign tokens that is longer.";
+            },
+            b =>
+            {
+                b.SaveToken = true;
+                b.RequireHttpsMetadata = false;
+                b.TokenValidationParameters.ValidateIssuer = true;
+                b.TokenValidationParameters.ValidateAudience = true;
+                b.TokenValidationParameters.ValidateLifetime = true;
+                b.TokenValidationParameters.RequireExpirationTime = true;
+                b.TokenValidationParameters.ValidAudience = "The audience";
+                b.TokenValidationParameters.ValidIssuer = "The issuer";
+            })
+        .AddAuthorization(options =>
+        {
+            options.AddPolicy("ManagersOnly", policy => policy.RequireRole("Manager"));
+        })
         .AddFastEndpoints()
         .SwaggerDocument(o =>
         {
@@ -48,14 +79,18 @@ try
             };
         });
 
+    builder.Services.AddAuthentication(o => o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme);
+
     await using var app = builder.Build();
-    app.UseSerilogRequestLogging();
-    app.UseFastEndpoints(c =>
-        {
-            c.Versioning.Prefix = "v";
-            c.Endpoints.RoutePrefix = "api";
-        })
-    .UseSwaggerGen();
+    app.UseSerilogRequestLogging()
+       .UseAuthentication()
+       .UseAuthorization()
+       .UseFastEndpoints(c =>
+       {
+           c.Versioning.Prefix = "v";
+           c.Endpoints.RoutePrefix = "api";
+       })
+       .UseSwaggerGen();
 
     await app.RunAsync();
 }
