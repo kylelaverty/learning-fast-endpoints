@@ -7,6 +7,7 @@ using FastEndpoints.Security;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Unleash;
 
 const string _applicationName = "Learning - FastEndpoints";
 
@@ -80,6 +81,23 @@ try
         });
 
     builder.Services.AddAuthentication(o => o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme);
+
+    builder.Services.AddSingleton<IUnleash>(s =>
+    {
+        var appName = _applicationName;
+        var unleashSettings = new UnleashSettings
+        {
+            AppName = appName,
+            UnleashApi = new Uri("http://localhost:4242/api"),
+            FetchTogglesInterval = TimeSpan.FromSeconds(30),
+            SendMetricsInterval = TimeSpan.FromSeconds(30),
+            CustomHttpHeaders = new Dictionary<string, string>
+            {
+                { "Authorization", "*:environmentnamegoeshere.somethingsomethingsomethingfun" }
+            }
+        };
+        return new DefaultUnleash(settings: unleashSettings);
+    });
 
     await using var app = builder.Build();
     app.UseSerilogRequestLogging()
