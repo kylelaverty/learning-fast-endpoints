@@ -1,0 +1,39 @@
+# directories
+**/bin/
+**/obj/
+**/out/
+**/charts/
+**/node_modules/
+**/.vs/
+**/.vscode/
+**/.tye/
+**/.logs/
+
+# Only omit the object blobs; allow the rest of the .git folder into the build-time container
+# in order to let SourceLink work correctly and so that we can pick up the git hash of the build.
+**/.git/objects/
+
+# files
+**/Dockerfile*
+**/docker-compose*
+**/*.trx
+**/*.md
+**/*.ps1
+**/*.cmd
+**/*.sh
+**/.classpath
+**/.dockerignore
+**/.env
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/azds.yaml
+**/npm-debug.log
+**/secrets.dev.yaml
+**/values.dev.yaml
+LICENSE
+README.md
