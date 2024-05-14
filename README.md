@@ -23,6 +23,7 @@ Created with :heart: by [Kyle Laverty](https://github.com/kylelaverty)
 - [FastEndpoints Swagger Support](https://fast-endpoints.com/docs/swagger-support)
 - [Seq](https://datalust.co/seq)
 - [Ardalis Serilog Tutorial](https://www.youtube.com/watch?v=mnPW8PURQOc)
+- [GitHub Action Contexts](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
 
 ## Notes
 
