@@ -31,7 +31,7 @@ public class Endpoint(ILogger<Endpoint>? logger, IUnleash featureToggles) : Endp
     {
         _logger?.LogInformation("Getting book with ID {Id}", request.Id);
 
-        if (_featureToggles.IsEnabled("lfe-book-testing"))
+        if (_featureToggles.IsEnabled(Utils.FeatureToggles.FeatureToggleList.LFEBookTesting))
         {
             _logger?.LogInformation("Toggle is enabled.");
         }
