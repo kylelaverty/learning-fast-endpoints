@@ -43,22 +43,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the code 📂
+      - name: 📂 Check out the code
         uses: actions/checkout@v4
 
-      - name: Setup .NET 📦
+      - name: 📦 Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore dependencies 📂
+      - name: 🔍 Enable problem matchers
+        run: echo "::add-matcher::.github/matchers/dotnet.json"
+
+      - name: 🎒 Restore dependencies
         run: dotnet restore
 
-      - name: Build 🧱
+      - name: 🛠️ Build
         run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
-      - name: Test  🧪
-        run: dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage'  test/learning-fast-endpoints-tests -- RunConfiguration.CollectSourceInformation=true
+      - name: 🧪 Test 
+        run: |
+          echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
+          dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage'  test/learning-fast-endpoints-tests -- RunConfiguration.CollectSourceInformation=true
 
       - name: Code Coverage Report 📝
         run: |
