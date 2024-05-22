@@ -38,10 +38,13 @@ env:
 
 jobs:
   build:
+    name: 'Build & Test'
+
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the code 📂
+        uses: actions/checkout@v4
 
       - name: Setup .NET 📦
         uses: actions/setup-dotnet@v4
@@ -57,7 +60,7 @@ jobs:
       - name: Test  🧪
         run: dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal 
               /p:CollectCoverage=true 
-              /p:CoverletOutput=TestResults/ 
+              /p:CoverletOutput=${{ github.workspace }}/coverage.info
               /p:CoverletOutputFormat=lcov
 
       # Upload the test coverage report
@@ -65,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dotent-test-coverage
-          path: ./test/learning-fast-endpoints-tests/TestResult
+          path: ${{ github.workspace }}/coverage.info
 
       - name: Publish coverage report to coveralls.io
         uses: coverallsapp/github-action@v2.3.0
