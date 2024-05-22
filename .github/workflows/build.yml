@@ -58,21 +58,12 @@ jobs:
         run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
       - name: Test  🧪
-        run: dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --logger trx
-              /p:CollectCoverage=true 
-              /p:CoverletOutput=${{ github.workspace }}/coverage.info
-              /p:CoverletOutputFormat=lcov
+        run: dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage'  test/learning-fast-endpoints-tests -- RunConfiguration.CollectSourceInformation=true
 
-      # Upload the test coverage report
-      - name : Upload Test Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dotent-test-coverage
-          path: ${{ github.workspace }}/coverage.info
-
-      - name: Publish coverage report to coveralls.io
-        uses: coverallsapp/github-action@v2.3.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ github.workspace }}/coverage.info
-          format: 'lcov'
+      - name: Code Coverage Report 📝
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.23
+          reportgenerator -reports:${{github.workspace}}/coverage.cobertura.xml -targetdir:${{github.workspace}}/report -reporttypes:MarkdownSummaryGithub "-filefilters:-*.g.cs;-*.gen.cs" -verbosity:Warning
+          sed -i 's/# Summary/## 📝 Code Coverage/g' ${{github.workspace}}/report/SummaryGithub.md
+          sed -i 's/## Coverage/### Code Coverage details/g' ${{github.workspace}}/report/SummaryGithub.md
+          cat ${{github.workspace}}/report/*.md >> $GITHUB_STEP_SUMMARY
