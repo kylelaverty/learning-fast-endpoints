@@ -60,6 +60,13 @@ jobs:
               /p:CoverletOutput=TestResults/ 
               /p:CoverletOutputFormat=lcov
 
+      # Upload the test coverage report
+      - name : Upload Test Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotent-test-coverage
+          path: ./test/learning-fast-endpoints-tests/TestResult
+
       - name: Publish coverage report to coveralls.io
         uses: coverallsapp/github-action@v2.3.0
         with:
