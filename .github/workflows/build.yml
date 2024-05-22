@@ -64,5 +64,5 @@ jobs:
         uses: coverallsapp/github-action@v2.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: './TestResults/coverage.info'
+          file: './test/learning-fast-endpoints-tests/TestResults/coverage.info'
           format: 'lcov'
