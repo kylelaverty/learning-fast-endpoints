@@ -2,6 +2,10 @@
 
 This project will be used to learn how to use FastEndpoints.
 
+[![example branch parameter](https://github.com/kylelaverty/learning-fast-endpoints/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/kylelaverty/learning-fast-endpoints/actions/workflows/build.yml?query=branch%3Amain++)
+[![Coverage Status](https://coveralls.io/repos/github/kylelaverty/learning-fast-endpoints/badge.svg?branch=main)](https://coveralls.io/github/kylelaverty/learning-fast-endpoints?branch=main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/kylelaverty/learning-fast-endpoints/blob/main/LICENSE)
+
 ## Table of Contents
 
 - [License](#license)

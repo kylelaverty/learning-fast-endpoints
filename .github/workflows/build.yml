@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+      - feature/**
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
@@ -38,21 +39,43 @@ env:
 
 jobs:
   build:
+    name: 'Build & Test'
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: 📂 Check out the code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET 📦
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 📦 Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Restore dependencies 📂
-      run: dotnet restore
+      - name: 🔍 Enable problem matchers
+        run: echo "::add-matcher::.github/matchers/dotnet.json"
 
-    - name: Build 🧱
-      run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
-      
-    - name: Test  🧪
-      run: dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal
+      - name: 🎒 Restore dependencies
+        run: dotnet restore
+
+      - name: 🛠️ Build
+        run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: 🧪 Test 
+        run: |
+          echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
+          dotnet test --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage'  test/learning-fast-endpoints-tests -- RunConfiguration.CollectSourceInformation=true
+
+      - name: 📝 Code Coverage Report 
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.23
+          reportgenerator -reports:${{github.workspace}}/coverage.cobertura.xml -targetdir:${{github.workspace}}/report -reporttypes:MarkdownSummaryGithub "-filefilters:-*.g.cs;-*.gen.cs" -verbosity:Warning
+          sed -i 's/# Summary/## 📝 Code Coverage/g' ${{github.workspace}}/report/SummaryGithub.md
+          sed -i 's/## Coverage/### Code Coverage details/g' ${{github.workspace}}/report/SummaryGithub.md
+          cat ${{github.workspace}}/report/*.md >> $GITHUB_STEP_SUMMARY
+
+      - name: 📝 Publish coverage report to coveralls.io
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{github.workspace}}/coverage.cobertura.xml
