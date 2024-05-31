@@ -14,6 +14,10 @@ public class Endpoint(IUnleash featureToggles) : Endpoint<Request, Results<Ok<Le
     {
         Get("/books/{id}");
         AllowAnonymous();
+        Throttle(
+            hitLimit: 10,
+            durationSeconds: 30
+        );
     }
 
     /// <summary>
